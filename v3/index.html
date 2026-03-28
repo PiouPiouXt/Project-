@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FACT ELECTRICITY ⚡</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="cur"></div>
+<canvas id="bgc"></canvas>
+<div class="page">
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">FACT <span>ELECTRICITY</span> ⚡</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="goBack(); return false;">Accueil</a></li>
+    <li><a href="#" onclick="goToSelection(); return false;">Appareils</a></li>
+    <li><a href="#">Tarifs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="menu-wrap" id="menuWrap">
+    <button class="hbg" id="hbg" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="drop" id="drop">
+      <button class="mi login" onclick="openLogin()"><span class="mi-ic">🔐</span>Log In</button>
+      <button class="mi logout" id="miLogout" onclick="openPanel('account')"><span class="mi-ic">👤</span>Mon compte</button>
+      <button class="mi" onclick="openPanel('aide')"><span class="mi-ic">❓</span>Aide</button>
+      <button class="mi" onclick="openPanel('historique')"><span class="mi-ic">📋</span>Historique</button>
+      <button class="mi quit" onclick="showQuit()"><span class="mi-ic">🚪</span>Quitter</button>
+    </div>
+    <div class="qconf" id="qconf">
+      <p>Êtes-vous sûr de vouloir quitter ?</p>
+      <div class="qconf-btns">
+        <button class="qy" onclick="window.close()">Oui</button>
+        <button class="qn" onclick="hideQuit()">Non</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Calculateur de facture d'électricité</div>
+    <h1 class="hero-title">
+      <span class="w">PRENEZ LE<br>CONTRÔLE DE<br></span>
+      <span class="y">VOTRE FACTURE</span>
+    </h1>
+    <p class="hero-sub">Estimez votre consommation électrique. Sélectionnez vos appareils, renseignez vos heures d'utilisation et obtenez votre facture instantanément.</p>
+    <div class="hero-cta">
+      <button class="btn-p" onclick="goToSelection()">Lancer estimation</button>
+      <button class="btn-s">En savoir plus</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="gauge-wrap" id="gaugeWrap">
+      <canvas id="gc" width="400" height="240"></canvas>
+      <div class="g-tip" id="gTip"></div>
+    </div>
+    <div class="g-read">
+      <div class="g-kwh" id="gKwh">0.0</div>
+      <div class="g-unit">kWh / mois estimé</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats">
+  <div class="stat"><div class="stat-n">9+</div><div class="stat-l">Appareils disponibles</div></div>
+  <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Calcul en temps réel</div></div>
+  <div class="stat"><div class="stat-n">0 Ar</div><div class="stat-l">Totalement gratuit</div></div>
+</div>
+
+
+
+<!-- ══ CTA ══ -->
+<div class="cta-strip">
+  <div class="cta-ttl">Prêt à maîtriser votre <span>consommation électrique</span> ?</div>
+  <button class="btn-p" onclick="goToSelection()">Commencer</button>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft-logo">FACT <span>ELECTRICITY</span></div>
+  <p>© 2025 Fact Electricity. Tous droits réservés.</p>
+  <p style="color:#2e2e2e">Consommation · Facture · Énergie</p>
+</footer>
+
+<!-- ══ SELECTION PAGE ══ -->
+<div class="sel-page" id="selPage">
+  <div class="sel-topbar">
+    <button class="sel-back" onclick="goBack()">← Retour</button>
+    <div class="sel-topbar-logo">FACT <span>ELECTRICITY</span> ⚡</div>
+    <div class="sel-topbar-gauge">
+      <div>
+        <div class="sel-live-kwh" id="selLiveKwh">0.0</div>
+        <div class="sel-live-unit">kWh / mois</div>
+      </div>
+      <div class="mini-gauge"><div class="mini-gauge-fill" id="miniGaugeFill"></div></div>
+    </div>
+  </div>
+  <div class="sel-body">
+    <div class="sel-hd">
+      <div class="sel-hd-lbl">⚡ Étape 1 — Sélection</div>
+      <h2 class="sel-hd-ttl">Sélectionnez vos appareils</h2>
+      <p class="sel-hd-sub">Cliquez sur un appareil pour configurer sa durée d'utilisation quotidienne.</p>
+    </div>
+    <div class="dev-grid" id="devGrid"></div>
+    <div class="cfg-panel" id="cfgPanel">
+      <div class="cp-hd">
+        <span id="cpIc"></span>
+        <span id="cpNm"></span>
+        <span id="cpW" style="font-size:.66rem;color:var(--muted);font-weight:400;margin-left:4px"></span>
+        <button class="cp-cls" onclick="closeConfig()">✕</button>
+      </div>
+      <div id="cpBody"></div>
+    </div>
+    <div class="sel-calc-row">
+      <button class="btn-p" style="font-size:.82rem;padding:16px 50px" onclick="openBillModal()">CALCULER MA FACTURE</button>
+    </div>
+    <div class="reset-all-row">
+      <button class="btn-reset-all" onclick="showResetConfirm()">Réinitialiser tous les appareils</button>
+    </div>
+    <div class="reset-confirm" id="resetConfirm">
+      <p>Remettre à zéro toutes les durées d'utilisation ?</p>
+      <div class="reset-confirm-btns">
+        <button class="rcy" onclick="resetAllDevices()">Oui, tout réinitialiser</button>
+        <button class="rcn" onclick="hideResetConfirm()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<!-- ══ SCRIM ══ -->
+<div class="scrim" id="scrim" onclick="closeAllPanels()"></div>
+
+<!-- ══ AIDE PANEL ══ -->
+<div class="sp" id="spAide">
+  <div class="sp-hd"><div class="sp-ttl">❓ COMMENT UTILISER</div><button class="sp-cls" onclick="closePanel('aide')">✕</button></div>
+  <div class="sp-body">
+    <div class="aide-step"><div class="aide-num">01</div><div><div class="aide-h">Sélectionnez vos appareils</div><div class="aide-p">Cliquez sur chaque appareil électrique présent dans votre foyer pour l'activer.</div></div></div>
+    <div class="aide-step"><div class="aide-num">02</div><div><div class="aide-h">Définissez la durée d'utilisation</div><div class="aide-p">Pour chaque appareil, entrez les heures et minutes par jour. Glissez le curseur ou utilisez les flèches ▲▼. Vous pouvez aussi saisir directement en heures/minutes.</div></div></div>
+    <div class="aide-step"><div class="aide-num">03</div><div><div class="aide-h">Ajoutez des appareils personnalisés</div><div class="aide-p">Cliquez sur « + Ajouter un appareil » pour inclure un appareil non listé avec son nom et sa puissance en Watts.</div></div></div>
+    <div class="aide-step"><div class="aide-num">04</div><div><div class="aide-h">Calculez votre facture</div><div class="aide-p">Cliquez sur « CALCULER MA FACTURE » pour obtenir une estimation mensuelle en kWh et en Ariary.</div></div></div>
+    <div class="aide-step"><div class="aide-num">05</div><div><div class="aide-h">Jauge en temps réel</div><div class="aide-p">La jauge circulaire se met à jour en direct pendant que vous configurez vos appareils.</div></div></div>
+  </div>
+</div>
+
+<!-- ══ HISTORIQUE PANEL ══ -->
+<div class="sp" id="spHistorique">
+  <div class="sp-hd"><div class="sp-ttl">📋 HISTORIQUE DES CALCULS</div><button class="sp-cls" onclick="closePanel('historique')">✕</button></div>
+  <div class="sp-body"><div id="histList"></div></div>
+</div>
+
+<!-- ══ ACCOUNT PANEL ══ -->
+<div class="sp" id="spAccount">
+  <div class="sp-hd"><div class="sp-ttl">👤 MON COMPTE</div><button class="sp-cls" onclick="closePanel('account')">✕</button></div>
+  <div class="sp-body">
+    <div class="acc-avatar">👤</div>
+    <div class="acc-name" id="accName">Utilisateur</div>
+    <div class="acc-email" id="accEmail">—</div>
+    <div class="acc-row"><span>Tarif kWh</span><span style="color:var(--y)">500 Ar</span></div>
+    <div class="acc-row"><span>Calculs effectués</span><span id="accCalcs" style="color:var(--y)">0</span></div>
+    <div class="acc-row"><span>Statut</span><span style="color:#4caf50">✓ Connecté</span></div>
+    <button class="acc-logout" onclick="doLogout()">🚪 SE DÉCONNECTER</button>
+  </div>
+</div>
+
+<!-- ══ BILL MODAL ══ -->
+<div class="ov" id="billOv">
+  <div class="modal-box">
+    <button class="ov-close" onclick="closeBillModal()">✕</button>
+    <div class="ov-title">⚡ RÉSULTAT DE VOTRE FACTURE</div>
+    <div class="ov-rows" id="billRows"></div>
+    <div class="ov-tlbl">Coût mensuel estimé (30 jours)</div>
+    <div class="ov-tnum" id="billTotal">0</div>
+    <div class="ov-tunit">Ariary / mois &nbsp;·&nbsp; <span id="billKwh">0 kWh</span></div>
+  </div>
+</div>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="lg-ov" id="lgOv">
+  <div class="lg-box">
+    <button class="lg-close" onclick="closeLogin()">✕</button>
+    <div class="lg-bolt">⚡</div>
+    <div class="lg-title">FACT <span>ELECTRICITY</span></div>
+    <input class="lg-in" id="lgPseudo" type="text" placeholder="Pseudo"/>
+    <input class="lg-in" id="lgPwd" type="password" placeholder="Mot de passe"/>
+    <button class="lg-connect" onclick="doLogin()">SE CONNECTER</button>
+    <button class="lg-create">CRÉER UN COMPTE</button>
+    <a href="#" class="lg-forgot">Mot de passe oublié ? Cliquez ici</a>
+    <div class="lg-div"><span>OU</span></div>
+    <div class="lg-social">
+      <button class="lg-google">
+        <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 6.9-10 6.9-17z"/><path fill="#FBBC05" d="M10.5 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2.1 1.4-4.7 2.3-7.7 2.3-6.3 0-11.6-3.7-13.5-9.3l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>
+        Google
+      </button>
+      <button class="lg-fb">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>
+        Facebook
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="vanilla.js">
+</script>
+</body>
+</html>
