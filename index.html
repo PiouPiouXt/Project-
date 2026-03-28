@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FACT ELECTRICITY ⚡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="cursor"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FACT <span>ELECTRICITY</span> ⚡</div>
+  <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#sel">Appareils</a></li>
+    <li><a href="#">Tarifs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <!-- hamburger + floating menu -->
+  <div class="menu-trigger" id="menuTrigger">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-menu" id="navMenu">
+      <button class="menu-item login-item" onclick="openLogin()">
+        <span class="menu-item-icon">🔐</span> Log In
+      </button>
+      <button class="menu-item" onclick="closeMenu()">
+        <span class="menu-item-icon">❓</span> Aide
+      </button>
+      <button class="menu-item" onclick="closeMenu()">
+        <span class="menu-item-icon">📋</span> Historique
+      </button>
+      <button class="menu-item quit-item" onclick="showQuit()">
+        <span class="menu-item-icon">🚪</span> Quitter
+      </button>
+    </div>
+    <!-- quit confirm -->
+    <div class="quit-confirm" id="quitConfirm">
+      <p>Êtes-vous sûr de vouloir quitter ?</p>
+      <div class="quit-confirm-btns">
+        <button class="qc-yes" onclick="window.close()">Oui</button>
+        <button class="qc-no" onclick="hideQuit()">Non</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── LOGIN MODAL ── -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <button class="login-close" onclick="closeLogin()">✕</button>
+    <div class="login-bolt">⚡</div>
+    <div class="login-title">FACT <span>ELECTRICITY</span></div>
+    <input class="login-input" type="text" placeholder="Pseudo"/>
+    <input class="login-input" type="password" placeholder="Mot de passe"/>
+    <button class="login-btn-connect">SE CONNECTER</button>
+    <button class="login-btn-create">CRÉER UN COMPTE</button>
+    <a href="#" class="login-forgot">Mot de passe oublié ? Cliquez ici</a>
+    <div class="login-divider"><span>OU</span></div>
+    <div class="login-social">
+      <button class="login-google">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.8 6C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 6.9-10 6.9-17z"/><path fill="#FBBC05" d="M10.5 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.7 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2.1 1.4-4.7 2.3-7.7 2.3-6.3 0-11.6-3.7-13.5-9.3l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>
+        Google
+      </button>
+      <button class="login-facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>
+        Facebook
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Calculateur de facture d'électricité</div>
+    <h1 class="hero-title">
+      <span class="white">PRENEZ LE<br>CONTRÔLE DE<br></span>
+      <span class="yellow">VOTRE FACTURE</span>
+    </h1>
+    <p class="hero-sub">Estimez votre consommation électrique. Sélectionnez vos appareils, renseignez vos heures d'utilisation et obtenez votre facture instantanément.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="scrollTo2()">Lancer estimation</button>
+      <button class="btn-secondary">En savoir plus</button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="gauge-outer" id="gaugeOuter">
+      <canvas id="gc" width="400" height="240"></canvas>
+      <div class="gauge-tooltip" id="gtt"></div>
+    </div>
+    <div class="gauge-reading">
+      <div class="gauge-kwh" id="gKwh">0.0</div>
+      <div class="gauge-unit">kWh / mois estimé</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">9+</div><div class="stat-label">Appareils disponibles</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Calcul en temps réel</div></div>
+  <div class="stat"><div class="stat-num">0 Ar</div><div class="stat-label">Totalement gratuit</div></div>
+</div>
+
+<!-- ═══ SELECTION ═══ -->
+<section class="selection-section" id="sel">
+  <div class="section-head">
+    <div class="section-label">⚡ Étape 1 — Sélection</div>
+    <h2 class="section-title">Sélectionnez vos appareils</h2>
+    <p class="section-sub">Cliquez sur un appareil pour configurer sa durée d'utilisation quotidienne.</p>
+  </div>
+
+  <div class="device-grid" id="deviceGrid"></div>
+
+  <!-- CONFIG PANEL -->
+  <div class="config-panel" id="configPanel">
+    <div class="cp-title">
+      <span id="cpIcon"></span>
+      <span id="cpName"></span>
+      <span id="cpWatts" style="font-size:.68rem;color:var(--muted);font-weight:400;letter-spacing:.1em;margin-left:4px"></span>
+      <button class="cp-close" onclick="closeConfig()">✕</button>
+    </div>
+    <div id="cpBody"></div>
+  </div>
+
+  <div class="calc-row">
+    <button class="btn-primary" style="font-size:.83rem;padding:17px 52px" onclick="openModal()">CALCULER MA FACTURE</button>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cta-title">Prêt à maîtriser votre <span>consommation électrique</span>&nbsp;?</div>
+  <button class="btn-primary" onclick="scrollTo2()">Commencer</button>
+</div>
+
+<footer>
+  <div class="footer-logo">FACT <span>ELECTRICITY</span></div>
+  <p>© 2025 Fact Electricity. Tous droits réservés.</p>
+  <p style="color:#2e2e2e">Consommation · Facture · Énergie</p>
+</footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">⚡ RÉSULTAT DE VOTRE FACTURE</div>
+    <div class="modal-rows" id="mRows"></div>
+    <div class="mtl">Coût mensuel estimé (30 jours)</div>
+    <div class="mtn" id="mTotal">0</div>
+    <div class="mtu">Ariary / mois &nbsp;·&nbsp; <span id="mKwh">0 kWh</span></div>
+  </div>
+</div>
+
+<script src="vanilla.js">
+</script>
+</body>
+</html>
