@@ -174,7 +174,7 @@
     .chips-wrap{margin-top:12px}
     .cg-label{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:#2e2e2e;margin-bottom:5px}
     .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
-    .chip{font-family:'Orbitron',sans-serif;font-size:.57rem;letter-spacing:.06em;padding:4px 8px;border:1px solid #1e1e1e;background:#090909;color:#3a3a3a;cursor:none;transition:border-color .15s,color .15s,background .15s,box-shadow .15s;white-space:nowrap}
+    .chip{font-family:'Orbitron',sans-serif;font-size:.57rem;letter-spacing:.06em;padding:4px 8px;border:1px solid #1e1e1e;background:#090909;color:#ffffff;cursor:none;transition:border-color .15s,color .15s,background .15s,box-shadow .15s;white-space:nowrap}
     .chip:hover{border-color:#3a3a3a;color:#777}
     .chip.sel{border-color:var(--yellow);color:var(--yellow);background:#100d00;box-shadow:0 0 9px #FFD60028}
 
